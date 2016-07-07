@@ -3,26 +3,26 @@
 
 function [jset] = findUnique(jset)
 
-    ys = jset(:,2)
-    xs = jset(:,1)
+    ys = jset(:,2);
+    xs = jset(:,1);
     x_list = 0;
     for i = 2:length(xs)-1
 
         if xs(i-1)==xs(i)
 
-            x_list(end+1) = i
+            x_list(end+1) = i;
 
         end    
 
     end
-    x_list = x_list(2:end)
+    x_list = x_list(2:end);
 
     y_list = 0;
     for i = 2:length(ys)-1
 
         if ys(i-1)==ys(i)
 
-            y_list(end+1) = i
+            y_list(end+1) = i;
 
         end    
 

@@ -5,7 +5,7 @@ folder = 'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1S
 load([folder 'sets.mat'])
 
 setNum = 's2'
-SN = s2;
+SN = s3;
 
 %% get length of line in pixels
 
@@ -53,6 +53,7 @@ yr = maxy-miny;
 
 h = 250
 thetaA = [5:10:175]
+thetaA = [25]
 
 for t = 1:length(thetaA)
 
@@ -82,6 +83,7 @@ for t = 1:length(thetaA)
             plot(([miny maxy]-b_sl)/m_sl, [miny maxy],'m-')
             jsets = SN;
             count_i = 1;
+            int_point = []
             for i = [1:length(jsets)]
 
                 frac = densify_lines(jsets{i});
