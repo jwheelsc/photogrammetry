@@ -5,7 +5,7 @@ folder = 'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1S
 load([folder 'sets.mat'])
 
 setNum = 's2'
-SN = s2;
+SN = s3;
 
 %% get length of line in pixels
 
@@ -53,6 +53,7 @@ yr = maxy-miny;
 
 h = 250
 thetaA = [5:10:175]
+thetaA = [25]
 
 for t = 1:length(thetaA)
 
@@ -80,11 +81,12 @@ for t = 1:length(thetaA)
 
             hold on
             plot(([miny maxy]-b_sl)/m_sl, [miny maxy],'m-')
-            sets = SN;
+            jsets = SN;
             count_i = 1;
-            for i = [1:length(sets)]
+            int_point = []
+            for i = [1:length(jsets)]
 
-                frac = densify_lines(sets{i});
+                frac = densify_lines(jsets{i});
 
                 x_sl = frac(:,1);
                 y_sl = (m_sl*x_sl)+b_sl;
@@ -118,11 +120,11 @@ for t = 1:length(thetaA)
 
             hold on
             plot([minx maxx], m_sl*[minx maxx]+b_sl,'m-')
-            sets = SN;
+            jsets = SN;
             count_i = 1;
-            for i = [1:length(sets)]
+            for i = [1:length(jsets)]
 
-                frac = densify_lines(sets{i});
+                frac = densify_lines(jsets{i});
 
                 x_sl = frac(:,1);
                 y_sl = (m_sl*x_sl)+b_sl;
