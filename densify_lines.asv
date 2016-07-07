@@ -1,24 +1,19 @@
+%%% this function is called on from analyze_sets to densify the lines that
+%%% were created using imfreehand
+
 function [output] = densify_lines(jset)
+    figure()
+    plot(jset(:,1)',jset(:,2)','-o')
+    xx = linspace(min(jset(:,1)),max(jset(:,1)),length(jset(:,1))*25);
 
-jset = s2{3};
+    [jset] = findUnique(jset)
+    [jset] = findUnique(jset)
+    
+    yy = pchip(jset(:,1),jset(:,2),xx);
 
-xx = linspace(min(jset(:,1)),max(jset(:,1)),length(jset(:,1))*25);
-
-plot(jset(:,1)',jset(:,2)','-o')
-
-[jset] = findUnique(jset)
-hold on 
-plot(jset(:,1)',jset(:,2)','r-^')
-[jset] = findUnique(jset)
-hold on 
-plot(jset(:,1)',jset(:,2)','g-^')
-
-yy = pchip(jset(:,1),jset(:,2),xx);
-
-hold on 
-plot(xx,yy,'m-+')
-
-output = [xx',yy'];
+    output = [xx',yy'];
+    figure
+    plot(xx,yy)
 
 
 

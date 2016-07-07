@@ -80,11 +80,11 @@ for t = 1:length(thetaA)
 
             hold on
             plot(([miny maxy]-b_sl)/m_sl, [miny maxy],'m-')
-            sets = SN;
+            jsets = SN;
             count_i = 1;
-            for i = [1:length(sets)]
+            for i = [1:length(jsets)]
 
-                frac = densify_lines(sets{i});
+                frac = densify_lines(jsets{i});
 
                 x_sl = frac(:,1);
                 y_sl = (m_sl*x_sl)+b_sl;
@@ -118,11 +118,11 @@ for t = 1:length(thetaA)
 
             hold on
             plot([minx maxx], m_sl*[minx maxx]+b_sl,'m-')
-            sets = SN;
+            jsets = SN;
             count_i = 1;
-            for i = [1:length(sets)]
+            for i = [1:length(jsets)]
 
-                frac = densify_lines(sets{i});
+                frac = densify_lines(jsets{i});
 
                 x_sl = frac(:,1);
                 y_sl = (m_sl*x_sl)+b_sl;
