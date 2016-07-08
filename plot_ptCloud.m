@@ -115,7 +115,9 @@ scaled_bars(:,:,3) = bars*fp
 scaled_b_d = scaled_bars(2:2:6,:,:)-scaled_bars(1:2:5,:,:)
 scales = sqrt(sum(scaled_b_d.*scaled_b_d,2))
 
-scales = permute(scales,[1,3,2])
+scales = permute(scales,[1,3,2]) 
+%%% this is now matrix, with the rows corresponding to the line number, and
+%%% the columns are the +-SD with the mean in the middle. 
 
 save('D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\scales_3d.mat','scales')
 %% this was my attempt at writing a ply file
