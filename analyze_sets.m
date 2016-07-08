@@ -4,8 +4,16 @@ close all
 folder = 'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\'
 load([folder 'sets.mat'])
 
-setNum = 's2'
-SN = s3;
+setNum = 's3'
+SN = s3
+jsets = {}
+%% densify the sets
+
+for i = 1:length(SN)
+
+    dense_jsets{i} = densify_lines(SN{i});
+    
+end
 
 %% get length of line in pixels
 
@@ -51,26 +59,25 @@ ylim([miny maxy])
 %% create a scaline line, and find the intersections
 yr = maxy-miny;
 
-h = 250
-thetaA = [5:10:175]
-thetaA = [25]
+h = 250;
+thetaA = [5:10:175];
+% thetaA = [185]
 
 for t = 1:length(thetaA)
 
-    theta = thetaA(t)
-    m_sl = tan(theta*pi/180)
-    B = h/sin((90-theta)*pi/180)
+    theta = thetaA(t);
+    m_sl = tan(theta*pi/180);
+    B = h/sin((90-theta)*pi/180);
     if theta < 90
-        b_sl = maxy-B
+        b_sl = maxy-B;
     else 
-        b_sl = B
+        b_sl = B;
     end
 
     count = 1;
     min_x_line = 0;
 
-    set_int = {}
-    % set_int{1} = [num2str(theta) '_' setNum]
+    set_int = {};
 
     if theta < 90
         while min_x_line < maxx
@@ -78,15 +85,25 @@ for t = 1:length(thetaA)
             b_sl = maxy-(B*count);
 
             min_x_line = (miny-b_sl)/m_sl;
+            
+            pa = [(maxy-b_sl)/m_sl,maxy];
+            pb = [maxx,m_sl*maxx+b_sl];
+            pc = [minx, m_sl*minx+b_sl];
+            pd = [(miny-b_sl)/m_sl,miny];
+            pA = [pa;pb;pc;pd];
+            [ps,pind] = sort(pA(:,1));
+            p1 = pA(pind(2),:);
+            p2 = pA(pind(3),:);
+            
+            line_length(count) = sqrt(sum((p2-p1).^2));
 
             hold on
-            plot(([miny maxy]-b_sl)/m_sl, [miny maxy],'m-')
-            jsets = SN;
+            plot([p1(1) p2(1)],[p1(2) p2(2)],'m-')
             count_i = 1;
-            int_point = []
-            for i = [1:length(jsets)]
+            int_point = [];
+            for i = [1:length(dense_jsets)]
 
-                frac = densify_lines(jsets{i});
+                frac = dense_jsets{i};
 
                 x_sl = frac(:,1);
                 y_sl = (m_sl*x_sl)+b_sl;
@@ -117,14 +134,25 @@ for t = 1:length(thetaA)
             b_sl = abs(B*count);
 
             min_y_line = m_sl*maxx+b_sl;
+           
+            pa = [(maxy-b_sl)/m_sl,maxy];
+            pb = [maxx,m_sl*maxx+b_sl];
+            pc = [minx, m_sl*minx+b_sl];
+            pd = [(miny-b_sl)/m_sl,miny];
+            pA = [pa;pb;pc;pd];
+            [ps,pind] = sort(pA(:,1));
+            p1 = pA(pind(2),:);
+            p2 = pA(pind(3),:);
+            
+            line_length(count) = sqrt(sum((p2-p1).^2));
 
             hold on
-            plot([minx maxx], m_sl*[minx maxx]+b_sl,'m-')
-            jsets = SN;
+            plot([p1(1) p2(1)],[p1(2) p2(2)],'m-')
             count_i = 1;
-            for i = [1:length(jsets)]
+            int_point = [];
+            for i = [1:length(dense_jsets)]
 
-                frac = densify_lines(jsets{i});
+                frac = dense_jsets{i};
 
                 x_sl = frac(:,1);
                 y_sl = (m_sl*x_sl)+b_sl;
@@ -149,7 +177,7 @@ for t = 1:length(thetaA)
     end
 
     axis equal
-%     save([folder 'sl_pts_' num2str(theta) '_' setNum '.mat'])
+    save([folder 'sl_pts_' num2str(theta) '_' setNum '.mat'], 'set_int', 'line_length')
 
 end
 
