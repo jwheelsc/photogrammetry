@@ -25,12 +25,15 @@ f2 = figure(2)
 % thetaA = [5:10:175];
 
 close all
-theta = '45'
+theta = '175'
 
 setNumStr = {'s1','s2','s3'}   %% these are the joint sets that were created from analyze_sets.m
 
+jset = []
+
 for j = 1:3
-    
+
+    np = []
     setNum = setNumStr{j}
     %%% this is a .mat file with a variable called set_int (joint set
     %%% intersection), which is a call array, and a variable containing line_length
@@ -165,9 +168,9 @@ figure(1)
 
 figure(2) 
     subplot(2,2,4)
-    np_t = sum(np,2)
-    plot(line_length*msf,np_t./(line_length*msf)','-o')
-    m_fqt = mean(np_t./(line_length*msf)')
+%     np_t = sum(np,2)
+    plot(line_length*msf,np_t1'./(line_length*msf)','-o')
+    m_fqt = mean(np_t1'./(line_length*msf)')
     hold on
     plot(get(gca,'xlim'),[m_fqt m_fqt],'r')
     grid on
@@ -189,7 +192,7 @@ fq = m_fqt
 %     hold on
 %     plot(xx,yy)
 
-tot_fq = sum(np_t)/(sum(line_length)*msf)
+tot_fq = sum(np_t1')/(sum(line_length)*msf)
 
 return
 %% test of the binning size

@@ -61,7 +61,7 @@ yr = maxy-miny;
 
 h = 250;
 thetaA = [5:10:175];
-% thetaA = [185]
+% thetaA = [75]
 
 for t = 1:length(thetaA)
 
@@ -78,6 +78,7 @@ for t = 1:length(thetaA)
     min_x_line = 0;
 
     set_int = {};
+    line_length = [];
 
     if theta < 90
         while min_x_line < maxx
@@ -177,7 +178,7 @@ for t = 1:length(thetaA)
     end
 
     axis equal
-    save([folder 'sl_pts_' num2str(theta) '_' setNum '.mat'], 'set_int', 'line_length')
+%     save([folder 'sl_pts_' num2str(theta) '_' setNum '.mat'], 'set_int', 'line_length')
 
 end
 

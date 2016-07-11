@@ -19,14 +19,18 @@ msf = mean(scale_factor)
 
 %%
 thetaA = [5:10:175];
+% thetaA = [5:10:45];
 setNumStr = {'s1','s2','s3'};   %% these are the joint sets that were created from analyze_sets.m
+
+jset = []
 
 for ang = 1:length(thetaA)
 
     theta = num2str(thetaA(ang))
 
     for j = 1:3
-
+    
+        np = []
         setNum = setNumStr{j};
         %%% this is a .mat file with a variable called set_int (joint set
         %%% intersection), which is a call array, and a variable containing line_length
@@ -79,6 +83,7 @@ for ang = 1:length(thetaA)
     s3 = load([folder 'sl_pts_' num2str(theta) '_' setNumStr{3} '.mat']);
 
     t_dist_bwp = [];
+    np_t1 = [];
     for i = 1:length(s1.set_int)
         all_pts = [s1.set_int{i};s2.set_int{i};s3.set_int{i}];
         if isempty(all_pts)==0
@@ -101,9 +106,38 @@ for ang = 1:length(thetaA)
     spc_std(4) = std(t_dist_bwp1{4});
     
     fq(ang,4) = 1/spc_mean(4);
-    np_t = sum(np,2);
-    m_fq(ang,4) = mean(np_t./(line_length*msf)');
+%     np_t = sum(np,2);
+    m_fq(ang,4) = mean(np_t1'./(line_length*msf)');
 
 
 end
 
+f1 = figure(1)
+    h1 = plot(thetaA,m_fq(:,1),'r-o')
+    hold on
+    h1a = plot(thetaA,fq(:,1),'r--o')
+
+    hold on
+    h2 = plot(thetaA,m_fq(:,2),'k-o')
+    hold on
+    plot(thetaA,fq(:,2),'k--o')
+
+    hold on
+    h3 = plot(thetaA,m_fq(:,3),'b-o')
+    hold on
+    plot(thetaA,fq(:,3),'b--o')
+
+    hold on
+    h4 = plot(thetaA,m_fq(:,4),'-o', 'color', [0 0.6 0])
+    hold on
+    plot(thetaA,fq(:,4),'--o', 'color', [0 0.6 0])
+
+    ylabel('Joint frequency (\lambda)')
+    xlabel('Scanline angle (\theta)')
+    set(gca,'fontsize',16)
+    grid on
+    legend([h1 h1a h2 h3 h4], {'set 1 (mean spacing)^{-1}','set 1 (total points per line)','set 2','set 3','all sets'},...
+        'location','northwest','fontsize',12)
+    
+    savePDFfunction(f1,[folder 'figures\frequency_angle'])
+    
