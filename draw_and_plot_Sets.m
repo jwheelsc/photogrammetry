@@ -8,13 +8,13 @@ folder = 'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1S
 close all
 
 f1 = figure('units','normalized','outerposition',[0 0 1 1])
-imshow([folder 'IMG_9030.JPG'])
+% imshow([folder 'IMG_9030.JPG'])
 load([folder 'IMG_9030_analysis\sets.mat'])
 
 for i = 1:length(s2)
     hold on
     p = s2{i};
-    ph(i)=plot(p(:,1)',p(:,2)','y','linewidth',1);
+    ph(i)=plot(p(:,1)',p(:,2)','r','linewidth',1);
 %     if i == 131
 %         ph(i)=plot(p(:,1)',p(:,2)','b','linewidth',2);
 %     end
@@ -23,7 +23,7 @@ end
 for i = 1:length(s1)
     hold on
     p = s1{i};
-    ph(i)=plot(p(:,1)',p(:,2)','r','linewidth',1);
+    ph(i)=plot(p(:,1)',p(:,2)','k','linewidth',1);
 end
 
 for i = 1:length(s3)
@@ -35,9 +35,12 @@ end
 for i = 1:length(s4)
     hold on
     p = s4{i};
-    ph(i)=plot(p(:,1)',p(:,2)','g','linewidth',1);
+    ph(i)=plot(p(:,1)',p(:,2)','color','y','linewidth',4);
 end
 
+xlim([0 5167])
+ylim([0 3500])
+savePDFfunction(f1,'D:\Documents\Writing\Thesis\photogram\figures\fracture_mapping_methods_v1\withSets')
 
 return
 

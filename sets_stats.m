@@ -21,11 +21,12 @@ msf = mean(scale_factor)
 
 f1 = figure(1)
 f2 = figure(2)
+fs = 16
 
 % thetaA = [5:10:175];
 
 close all
-theta = '175'
+theta = '65'
 
 setNumStr = {'s1','s2','s3'}   %% these are the joint sets that were created from analyze_sets.m
 
@@ -87,7 +88,7 @@ for j = 1:3
         yy = fq*exp(-fq*xx)
         hold on
         plot(xx,yy,'r')
-        text(0.6, 0.8, ['\lambda = ' num2str(fq)],'units', 'normalized','color','r')
+        text(0.6, 0.8, ['\lambda = ' num2str(fq)],'units', 'normalized','color','r','fontsize',fs)
         ylim([0 0.5])
         hold on 
         plot([spc_mean(j) spc_mean(j)], get(gca,'ylim'),'r')
@@ -96,18 +97,25 @@ for j = 1:3
         hold on
         cm = [0.4 0 0.4]
         plot(xx,yy2,'color',cm)
-        text(0.6, 0.7, ['\lambda = ' num2str(m_fq(j))],'units', 'normalized','color',cm)
+        text(0.6, 0.7, ['\lambda = ' num2str(m_fq(j))],'units', 'normalized','color',cm,'fontsize',fs)
         ylim([0 0.5])
         hold on 
         plot([1/m_fq(j) 1/m_fq(j)], get(gca,'ylim'),'color', cm)
+        set(gca,'fontsize',fs)
         
     figure(2)
         subplot(2,2,j)
         plot(line_length*msf,np(:,j)./(line_length*msf)','-o')
         hold on
-        plot(get(gca,'xlim'),[m_fq(j) m_fq(j)],'r')
+        h1 = plot(get(gca,'xlim'),[m_fq(j) m_fq(j)],'r')
         grid on
-        text(0.7, 0.9, num2str(m_fq(j)),'units', 'normalized')
+        text(0.7, 0.9, num2str(m_fq(j)),'units', 'normalized','fontsize',fs)
+        xlabel('line length(m)')
+        ylabel('frequency')
+        if j == 1
+            legend(h1, 'mean frequency','location','southeast')
+        end
+        set(gca,'fontsize',fs)
         
     
 end
@@ -150,23 +158,23 @@ m_fq4 = mean(np_t1./(line_length*msf)')
 
 figure(1)
     subplot(2,2,4)
-    histogram(t_dist_bwp1{4},5,'normalization','probability')
+    histogram(t_dist_bwp1{4},10,'normalization','probability')
     ylabel(['all sets probability'])
     xlabel('spacing between joints (m)')
     ylim([0 0.5])
     hold on 
     plot([spc_mean(4) spc_mean(4)], get(gca,'ylim'),'r')
     grid on
-    text(0.6, 0.8, ['\lambda = ' num2str(1/spc_mean(4))],'units', 'normalized','color','r')
+    text(0.6, 0.8, ['\lambda = ' num2str(1/spc_mean(4))],'units', 'normalized','color','r','fontsize',fs)
     xlm = get(gca,'xlim')
     xx = linspace(xlm(1),xlm(2),20)
     yy = fq4*exp(-fq4*xx)
     hold on
     plot(xx,yy,'r')
-    
-    suptitle(['Scanline angle ' theta '$$\rm{^o}$$, value = 1/(average spacing)'],'interpreter','latex')
+    set(gca,'fontsize',fs)
+    suptitle(['Scanline angle ' theta '$$\rm{^o}$$, value = 1/(average spacing)'],'interpreter','latex','fontsize',fs)
 
-figure(2) 
+f2 = figure(2) 
     subplot(2,2,4)
 %     np_t = sum(np,2)
     plot(line_length*msf,np_t1'./(line_length*msf)','-o')
@@ -174,17 +182,21 @@ figure(2)
     hold on
     plot(get(gca,'xlim'),[m_fqt m_fqt],'r')
     grid on
-    text(0.7, 0.9, num2str(m_fqt),'units', 'normalized')
-    suptitle('value = mean of number of points per line (mean fq)')
+    text(0.7, 0.9, num2str(m_fqt),'units', 'normalized','fontsize',fs)
+    suptitle('value = mean of number of points per line (mean fq)','fontsize',fs)
+    xlabel('line length(m)')
+    ylabel('frequency')
+    set(gca,'fontsize',fs)
     
-figure(1)
+f1 = figure(1)
     yy2 = m_fqt*exp(-m_fqt*xx)
     hold on
     plot(xx,yy2,'color',cm)
-    text(0.6, 0.7, ['\lambda = ' num2str(m_fqt)],'units', 'normalized','color',cm)
+    text(0.6, 0.7, ['\lambda = ' num2str(m_fqt)],'units', 'normalized','color',cm,'fontsize',fs)
     ylim([0 0.5])
     hold on 
     plot([1/m_fqt 1/m_fqt], get(gca,'ylim'),'color',cm)
+    set(gca,'fontsize',fs)
 % figure(1)  
 %     subplot(2,2,4)
 fq = m_fqt
@@ -193,12 +205,17 @@ fq = m_fqt
 %     plot(xx,yy)
 
 tot_fq = sum(np_t1')/(sum(line_length)*msf)
+% 
+% savePDFfunction(f1,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures\meanFreq_vs_length')
+% savePDFfunction(f2,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures\FreqDist')
 
 return
 %% test of the binning size
-% close all
-figure(4)
-subplot(1,2,1)
-h20 = histogram(t_dist_bwp1{4},20,'normalization','probability')
-subplot(1,2,2)
-h10 = histogram(t_dist_bwp1{4},10,'normalization','probability')
+% % close all
+% figure(4)
+% subplot(1,2,1)
+% h20 = histogram(t_dist_bwp1{4},20,'normalization','probability')
+% subplot(1,2,2)
+% h10 = histogram(t_dist_bwp1{4},10,'normalization','probability')
+
+

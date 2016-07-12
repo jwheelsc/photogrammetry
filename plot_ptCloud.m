@@ -16,7 +16,7 @@ color = [a1{7} a1{8} a1{9}];
 close all
 % convert the color format and append it to ptCloud
 ptCloud.Color = uint8(color);
-pcshow(ptCloud)
+fig1 = pcshow(ptCloud)
 
 %%
 
@@ -61,13 +61,14 @@ p2 = p(clust==2,:)
 hold on
 plot3(p1(:,1),p1(:,2),p1(:,3),'r.')
 hold on
-plot3(p1(:,2),p1(:,2),p1(:,3),'b.')
+plot3(p2(:,2),p2(:,2),p2(:,3),'b.')
 
 % here are the "real" camera coordinates from the GPS location
 rC = [[221,859,2107]',[214,948,2115]']
 len = rC(:,1)-rC(:,2)
 d = sqrt(len(1)^2+len(2)^2+len(3)^2)
 uVec = len/d
+
 hold on
 % here is a vector that assumes that the first camera is at the origin,
 % while the second camera is at the end of the unit vector
@@ -91,7 +92,7 @@ rC = [[221,859,2107]',[214,948,2115]']
 
 M = xyzp';
 hold on
-plot3(M(:,1),M(:,2),M(:,3),'k.')
+fig1 = plot3(M(:,1),M(:,2),M(:,3),'k.')
 
 %%% or, with or wihtout rotating the vectors, we can scale 
 % first find the ration of the lengths of cameras
@@ -119,7 +120,12 @@ scales = permute(scales,[1,3,2])
 %%% this is now matrix, with the rows corresponding to the line number, and
 %%% the columns are the +-SD with the mean in the middle. 
 
-save('D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\scales_3d.mat','scales')
+
+
+% filename = 'D:\Documents\Writing\Thesis\photogram\figures\fracture_mapping_methods_v1\model3d'
+% print(fig1,filename,'-dpdf','-r0')
+% savePDFfunction(fig1,'D:\Documents\Writing\Thesis\photogram\figures\fracture_mapping_methods_v1\model3d')
+% save('D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\scales_3d.mat','scales')
 %% this was my attempt at writing a ply file
 % M_out = [xyz_s, a1{4}, a1{5}, a1{6}, color];
 % 

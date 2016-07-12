@@ -4,8 +4,8 @@ close all
 folder = 'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\'
 load([folder 'sets.mat'])
 
-setNum = 's3'
-SN = s3
+setNum = 's1'
+SN = s1
 jsets = {}
 %% densify the sets
 
@@ -61,7 +61,7 @@ yr = maxy-miny;
 
 h = 250;
 thetaA = [5:10:175];
-% thetaA = [75]
+thetaA = 125
 
 for t = 1:length(thetaA)
 
