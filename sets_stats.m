@@ -2,7 +2,7 @@ clear all
 close all
 
 folder = 'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\'
-load([folder 'sets.mat'])
+load([folder 'sets_2.mat'])
 
 %% scale
 load D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\scales_3d.mat
@@ -41,7 +41,7 @@ for j = 1:3
     %%%. There is a cell for each
     %%% scanline, and within that cell contains the coordinates of where
     %%% the scanline of a given angle (theta) intersects a joint set (j)
-    load([folder 'sl_pts_' num2str(theta) '_' setNum '.mat'])  
+    load([folder 'sl_pts_' num2str(theta) '_' setNum '_sets_2.mat'])  
     t_dist_bwp = []
     for i = 1:length(set_int)
         
@@ -131,9 +131,9 @@ legend([l1 l2], {'negative exponential', 'lognormal'},'fontsize',12,'location','
 %% ok, this might get a little more complex, but I want to put the points 
 %%% from all sets on a given scanline
     
-s1 = load([folder 'sl_pts_' num2str(theta) '_' setNumStr{1} '.mat'])  
-s2 = load([folder 'sl_pts_' num2str(theta) '_' setNumStr{2} '.mat']) 
-s3 = load([folder 'sl_pts_' num2str(theta) '_' setNumStr{3} '.mat'])
+s1 = load([folder 'sl_pts_' num2str(theta) '_' setNumStr{1} '_sets_2.mat'])  
+s2 = load([folder 'sl_pts_' num2str(theta) '_' setNumStr{2} '_sets_2.mat']) 
+s3 = load([folder 'sl_pts_' num2str(theta) '_' setNumStr{3} '_sets_2.mat'])
 
 t_dist_bwp = []
 for i = 1:length(s1.set_int)
@@ -213,8 +213,8 @@ f1 = figure(1)
 fq = m_fqt
 tot_fq = sum(np_t1')/(sum(line_length)*msf)
 
-savePDFfunction(f1,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures\meanFreq_vs_length')
-savePDFfunction(f2,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures\FreqDist')
+savePDFfunction(f1,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures_2\meanFreq_vs_length')
+savePDFfunction(f2,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures_2\FreqDist')
 
 return
 %% test of the binning size
@@ -226,12 +226,17 @@ return
 % h10 = histogram(t_dist_bwp1{4},10,'normalization','probability')
 
 %% this section is to get the distriubtion of lengths of all the sets, and the first two section of this script should first be run
+clear all
+
+folder = 'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\'
+load([folder 'sets_2.mat'])
+
+msf = 0.009
+
 close all
 fL = figure
-bins = 20
+bins = 15
 fs = 16
-
-SN = s1;
 
 for j = 1:3
     
@@ -250,10 +255,13 @@ for j = 1:3
     end
     d_sc1 = d*msf;
     subplot(2,2,j)
-    histogram(d_sc1,bins,'normalization','pdf')
+    h = histogram(d_sc1,bins,'normalization','pdf')
+%     keyboard
+    text(0.5,0.7,['mean = ' num2str(mean(d_sc1)) 'm'],'units','normalized','fontsize',fs)
+%     text(0.5,0.6,['mode = ' num2str(mode(d_sc1)) 'm'],'units','normalized','fontsize',fs)
     grid on
     xlabel('trace length (m)','fontsize',fs)
-    ylabel('set 1 probability','fontsize',fs)
+    ylabel(['set ' num2str(j) ' probability'],'fontsize',fs)
     xlim([0 25])
     xl = get(gca,'xlim')
     mean_l = mean(d_sc1)
@@ -277,6 +285,7 @@ subplot(2,2,1)
 legend([h1 h2], {'negative exponential','lognormal'},'location','northeast','fontsize',12)
 
 SN = [s1,s2,s3];
+d = []
 for i = 1:length(SN)
     lin = SN{i};
     diff = lin(2:end,:)-lin(1:end-1,:);
@@ -284,7 +293,10 @@ for i = 1:length(SN)
 end
 d_scT = d*msf;
 subplot(2,2,4)
-histogram(d_scT,'normalization','pdf')
+histogram(d_scT,bins,'normalization','pdf')
+text(0.5,0.7,['mean = ' num2str(mean(d_scT)) 'm'],'units','normalized','fontsize',fs)
+% text(0.5,0.6,['mode = ' num2str(mode(d_scT)) 'm'],'units','normalized','fontsize',fs)
+grid on
 mean_l = mean(d_scT)
 lambda = mean_l^-1
 yy = lambda*exp(-lambda*xx)
@@ -297,12 +309,12 @@ h2 = plot(xx,yy2,'b','linewidth',2)
 xlim([0 25])
 grid on
 xlabel('trace length (m)','fontsize',fs)
-ylabel('set 1 probability','fontsize',fs)
+ylabel('set 4 probability','fontsize',fs)
 set(gca,'fontsize',fs)
 hold on
 plot([mean_l mean_l],get(gca,'ylim'),'k')
 
-savePDFfunction(fL,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures\lengthDist')
+savePDFfunction(fL,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures_2\lengthDist')
 
 
 

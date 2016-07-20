@@ -107,30 +107,68 @@ for ang = 1:length(thetaA)
     
     fq(ang,4) = 1/spc_mean(4);
 %     np_t = sum(np,2);
-    m_fq(ang,4) = mean(np_t1'./(line_length*msf)');
+    m_fq(ang,4) = mean(np_t1'./(s1.line_length*msf)');
 
 
 end
-
+fs2 = 12
 f1 = figure(1)
-    h1 = plot(thetaA,m_fq(:,1),'r-o')
+    js = 1
+    h1 = plot(thetaA,m_fq(:,js),'r-o')
+%         my = max(m_fq(:,js))
+%         el = find(m_fq(:,js)==my)
+%         mx = thetaA(el)
+%         text(mx,my,num2str(my),'fontsize',fs2)
     hold on
-    h1a = plot(thetaA,fq(:,1),'r--o')
+    h1a = plot(thetaA,fq(:,js),'r--o')
+        my = max(fq(:,js))
+        el = find(fq(:,js)==my)
+        mx = thetaA(el)
+        text(mx,my,num2str(my),'fontsize',fs2)
+    
+    js = 2
+    h2 = plot(thetaA,m_fq(:,js),'k-o')
+%         my = max(m_fq(:,js))
+%         el = find(m_fq(:,js)==my)
+%         mx = thetaA(el)
+%         text(mx,my,num2str(my),'fontsize',fs2)
+    hold on
+    h2a = plot(thetaA,fq(:,js),'k--o')
+        my = max(fq(:,js))
+        el = find(fq(:,js)==my)
+        mx = thetaA(el)
+        text(mx,my,num2str(my),'fontsize',fs2)
 
+    js = 3
+    h3 = plot(thetaA,m_fq(:,js),'b-o')
+%         my = max(m_fq(:,js))
+%         el = find(m_fq(:,js)==my)
+%         mx = thetaA(el)
+%         text(mx,my,num2str(my),'fontsize',fs2)
     hold on
-    h2 = plot(thetaA,m_fq(:,2),'k-o')
-    hold on
-    plot(thetaA,fq(:,2),'k--o')
+    h3a = plot(thetaA,fq(:,js),'b--o')
+        my = max(fq(:,js))
+        el = find(fq(:,js)==my)
+        mx = thetaA(el)
+        text(mx,my,num2str(my),'fontsize',fs2)
 
+    js = 4
+    h4 = plot(thetaA,m_fq(:,js),'-o', 'color', [0 0.6 0])
+%         my = max(m_fq(:,js))
+%         el = find(m_fq(:,js)==my)
+%         mx = thetaA(el)
+%         text(mx,my,num2str(my),'fontsize',fs2)
     hold on
-    h3 = plot(thetaA,m_fq(:,3),'b-o')
-    hold on
-    plot(thetaA,fq(:,3),'b--o')
+    h34 = plot(thetaA,fq(:,js),'--o', 'color', [0 0.6 0])
+        my = max(fq(:,js))
+        el = find(fq(:,js)==my)
+        mx = thetaA(el)
+        text(mx,my,num2str(my),'fontsize',fs2)
+        my = min(fq(:,js))
+        el = find(fq(:,js)==my)
+        mx = thetaA(el)
+        text(mx,my,num2str(my),'fontsize',fs2)
 
-    hold on
-    h4 = plot(thetaA,m_fq(:,4),'-o', 'color', [0 0.6 0])
-    hold on
-    plot(thetaA,fq(:,4),'--o', 'color', [0 0.6 0])
 
     ylabel('Joint frequency (\lambda)')
     xlabel('Scanline angle (\theta)')
@@ -139,5 +177,5 @@ f1 = figure(1)
     legend([h1 h1a h2 h3 h4], {'set 1 (mean spacing)^{-1}','set 1 (total points per line)','set 2','set 3','all sets'},...
         'location','northwest','fontsize',12)
     
-    savePDFfunction(f1,[folder 'figures\frequency_angle'])
+    savePDFfunction(f1,[folder 'figuresfrequency_angle'])
     

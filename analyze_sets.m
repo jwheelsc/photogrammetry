@@ -3,10 +3,12 @@ close all
 
 folder = 'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\'
 load([folder 'sets_2.mat'])
-
-setNum = 's2'
-SN = s2
+setNum = 's3'
+SN = s3
 jsets = {}
+
+% load([folder 'sets_2_only_S2.mat'])
+
 %% densify the sets
 
 for i = 1:length(SN)
