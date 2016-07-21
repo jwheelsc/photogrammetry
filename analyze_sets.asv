@@ -29,7 +29,7 @@ d1 = getLineLength(SN)
 
 %% find some bounding boxesthe bounding box of the entire set
 for i = 1:length(s1)
-    lin = s1{i};
+    lin = S1{i};
     mnx(i) = min(lin(:,1));
     mny(i) = min(lin(:,2));
     mxx(i) = max(lin(:,1));
@@ -40,34 +40,29 @@ maxy1 = max(mxy)
 minx1 = min(mnx)
 maxx1 = max(mxx)
 
-for i = 1:length(s2)
-    lin = s2{i};
+for i = 1:length(S1)
+    lin = S1{i};
     mnx(i) = min(lin(:,1));
     mny(i) = min(lin(:,2));
     mxx(i) = max(lin(:,1));
     mxy(i) = max(lin(:,2));
 end 
-miny2 = min(mny)
-maxy2 = max(mxy)
-minx2 = min(mnx)
-maxx2 = max(mxx)
+miny1 = min(mny)
+maxy1 = max(mxy)
+minx1 = min(mnx)
+maxx1 = max(mxx)
 
-for i = 1:length(s3)
-    lin = s3{i};
+for i = 1:length(S1)
+    lin = S1{i};
     mnx(i) = min(lin(:,1));
     mny(i) = min(lin(:,2));
     mxx(i) = max(lin(:,1));
     mxy(i) = max(lin(:,2));
 end 
-miny3 = min(mny)
-maxy3 = max(mxy)
-minx3 = min(mnx)
-maxx3 = max(mxx)
-
-miny = min([miny1,miny2,miny3])
-maxy = max([maxy1,maxy2,maxy3])
-minx = min([minx1,minx2,minx3])
-maxx = max([maxx1,maxx2,maxx3])
+miny1 = min(mny)
+maxy1 = max(mxy)
+minx1 = min(mnx)
+maxx1 = max(mxx)
 
 %% plot all the lines
 f1 = figure('units','normalized','outerposition',[0 0 1 1])
@@ -97,8 +92,9 @@ ylim([miny maxy])
 yr = maxy-miny;
 
 h = 250;
-thetaA = [5:5:175];
-% thetaA = 30
+% thetaA = [5:10:175];
+% thetaA = [5:5:175];
+thetaA = 30
 
 for t = 1:length(thetaA)
 
@@ -217,7 +213,7 @@ for t = 1:length(thetaA)
     end
 
     axis equal
-    save([folder subFolder 'sl_pts_' num2str(theta) '_' setNum '_sets.mat'], 'set_int', 'line_length')
+%     save([folder subFolder 'sl_pts_' num2str(theta) '_' setNum '_sets.mat'], 'set_int', 'line_length')
 
 end
 

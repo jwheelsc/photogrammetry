@@ -1,30 +1,25 @@
 clear all
 close all
 
-[folder, subFolder, imgNum, setIn] = whatFolder()
-folderStr = [folder subFolder setIn]
-
-load(folderStr)
+folder = 'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\'
+load([folder 'sets_2.mat'])
 
 %% scale
-findSF = 0
-if findSF == 1
-    load D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\scales_3d.mat
-    %%% these scales lengths were generated from plot_ptCloud, and notes are
-    %%% therin
+load D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\scales_3d.mat
+%%% these scales lengths were generated from plot_ptCloud, and notes are
+%%% therin
 
-    for i = 1:length(s4)
-        sb = s4{i} %%% here s4 are the scales drawn on the 2d image
-        l_sb(i) = sqrt(sum((sb(2,:)-sb(1,:)).^2,2))
-    end
-
-    scale_factor = scales(:,2)./l_sb'  %% scales are the line length on the 3d images
-    msf = mean(scale_factor)
+for i = 1:length(s4)
+    sb = s4{i} %%% here s4 are the scales drawn on the 2d image
+    l_sb(i) = sqrt(sum((sb(2,:)-sb(1,:)).^2,2))
 end
-msf = 1/108
+
+scale_factor = scales(:,2)./l_sb'  %% scales are the line length on the 3d images
+msf = mean(scale_factor)
+
 %%
-% thetaA = [5:5:175];
 thetaA = [5:10:175];
+% thetaA = [5:10:45];
 setNumStr = {'s1','s2','s3'};   %% these are the joint sets that were created from analyze_sets.m
 
 jset = []
@@ -42,7 +37,7 @@ for ang = 1:length(thetaA)
         %%%. There is a cell for each
         %%% scanline, and within that cell contains the coordinates of where
         %%% the scanline of a given angle (theta) intersects a joint set (j)
-        load([folder subFolder 'sl_pts_' num2str(theta) '_' setNum '_sets.mat'])  ;
+        load([folder 'sl_pts_' num2str(theta) '_' setNum '_sets_2.mat'])  ;
         t_dist_bwp = [];
         for i = 1:length(set_int)
 
@@ -83,9 +78,9 @@ for ang = 1:length(thetaA)
     %% ok, this might get a little more complex, but I want to put the points 
     %%% from all sets on a given scanline
 
-    s1 = load([folder subFolder 'sl_pts_' num2str(theta) '_' setNumStr{1} '_sets.mat']);  
-    s2 = load([folder subFolder 'sl_pts_' num2str(theta) '_' setNumStr{2} '_sets.mat']); 
-    s3 = load([folder subFolder 'sl_pts_' num2str(theta) '_' setNumStr{3} '_sets.mat']);
+    s1 = load([folder 'sl_pts_' num2str(theta) '_' setNumStr{1} '_sets_2.mat']);  
+    s2 = load([folder 'sl_pts_' num2str(theta) '_' setNumStr{2} '_sets_2.mat']); 
+    s3 = load([folder 'sl_pts_' num2str(theta) '_' setNumStr{3} '_sets_2.mat']);
 
     t_dist_bwp = [];
     np_t1 = [];
@@ -112,68 +107,30 @@ for ang = 1:length(thetaA)
     
     fq(ang,4) = 1/spc_mean(4);
 %     np_t = sum(np,2);
-    m_fq(ang,4) = mean(np_t1'./(s1.line_length*msf)');
+    m_fq(ang,4) = mean(np_t1'./(line_length*msf)');
 
 
 end
-fs2 = 12
+
 f1 = figure(1)
-    js = 1
-    h1 = plot(thetaA,m_fq(:,js),'r-o')
-%         my = max(m_fq(:,js))
-%         el = find(m_fq(:,js)==my)
-%         mx = thetaA(el)
-%         text(mx,my,num2str(my),'fontsize',fs2)
+    h1 = plot(thetaA,m_fq(:,1),'r-o')
     hold on
-    h1a = plot(thetaA,fq(:,js),'r--o')
-        my = max(fq(:,js))
-        el = find(fq(:,js)==my)
-        mx = thetaA(el)
-        text(mx,my,num2str(my),'fontsize',fs2)
-    
-    js = 2
-    h2 = plot(thetaA,m_fq(:,js),'k-o')
-%         my = max(m_fq(:,js))
-%         el = find(m_fq(:,js)==my)
-%         mx = thetaA(el)
-%         text(mx,my,num2str(my),'fontsize',fs2)
-    hold on
-    h2a = plot(thetaA,fq(:,js),'k--o')
-        my = max(fq(:,js))
-        el = find(fq(:,js)==my)
-        mx = thetaA(el)
-        text(mx,my,num2str(my),'fontsize',fs2)
+    h1a = plot(thetaA,fq(:,1),'r--o')
 
-    js = 3
-    h3 = plot(thetaA,m_fq(:,js),'b-o')
-%         my = max(m_fq(:,js))
-%         el = find(m_fq(:,js)==my)
-%         mx = thetaA(el)
-%         text(mx,my,num2str(my),'fontsize',fs2)
     hold on
-    h3a = plot(thetaA,fq(:,js),'b--o')
-        my = max(fq(:,js))
-        el = find(fq(:,js)==my)
-        mx = thetaA(el)
-        text(mx,my,num2str(my),'fontsize',fs2)
-
-    js = 4
-    h4 = plot(thetaA,m_fq(:,js),'-o', 'color', [0 0.6 0])
-%         my = max(m_fq(:,js))
-%         el = find(m_fq(:,js)==my)
-%         mx = thetaA(el)
-%         text(mx,my,num2str(my),'fontsize',fs2)
+    h2 = plot(thetaA,m_fq(:,2),'k-o')
     hold on
-    h34 = plot(thetaA,fq(:,js),'--o', 'color', [0 0.6 0])
-        my = max(fq(:,js))
-        el = find(fq(:,js)==my)
-        mx = thetaA(el)
-        text(mx,my,num2str(my),'fontsize',fs2)
-        my = min(fq(:,js))
-        el = find(fq(:,js)==my)
-        mx = thetaA(el)
-        text(mx,my,num2str(my),'fontsize',fs2)
+    plot(thetaA,fq(:,2),'k--o')
 
+    hold on
+    h3 = plot(thetaA,m_fq(:,3),'b-o')
+    hold on
+    plot(thetaA,fq(:,3),'b--o')
+
+    hold on
+    h4 = plot(thetaA,m_fq(:,4),'-o', 'color', [0 0.6 0])
+    hold on
+    plot(thetaA,fq(:,4),'--o', 'color', [0 0.6 0])
 
     ylabel('Joint frequency (\lambda)')
     xlabel('Scanline angle (\theta)')
@@ -182,5 +139,5 @@ f1 = figure(1)
     legend([h1 h1a h2 h3 h4], {'set 1 (mean spacing)^{-1}','set 1 (total points per line)','set 2','set 3','all sets'},...
         'location','northwest','fontsize',12)
     
-%     savePDFfunction(f1,[folder 'figuresfrequency_angle'])
+    savePDFfunction(f1,[folder 'figures_2\frequency_angle'])
     

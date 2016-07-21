@@ -3,13 +3,13 @@
 %%% scripts
 
 
-[folder, subFolder, imgNum, set] = whatFolder()
-folderStr = [folder subFolder set]
+[folder, subFolder, imgNum, setIn] = whatFolder()
+folderStr = [folder subFolder setIn]
 
 close all
 
 f1 = figure('units','normalized','outerposition',[0 0 1 1])
-ih = imshow([folder imgNum])
+imshow([folder imgNum])
 xlim([1800 4650])
 ylim([760 3000 ])
 hold on
@@ -36,7 +36,7 @@ end
 for i = 1:length(s1)
     hold on
     p = s1{i};
-    ph(i)=plot(p(:,1)',p(:,2)','r','linewidth',1);
+    ph(i)=plot(p(:,1)',p(:,2)','k','linewidth',1);
 end
 
 for i = 1:length(s2)
@@ -51,7 +51,7 @@ end
 for i = 1:length(s3)
     hold on
     p = s3{i};
-    ph(i)=plot(p(:,1)',p(:,2)','y','linewidth',1);
+    ph(i)=plot(p(:,1)',p(:,2)','r','linewidth',1);
 end
 
 popup = uicontrol('Style', 'popup',...
@@ -95,29 +95,21 @@ for i = 1:length(s1)
 end
 
 %% if you need to get rid of a point, try this
-[folder, subFolder, imgNum, set] = whatFolder()
-folderStr = [folder subFolder set]
+[folder, subFolder, imgNum, setIn] = whatFolder()
+folderStr = [folder subFolder setIn]
 load(folderStr)
 close all
-figure
 
-pt = 51
+pt = 166
 
 SN = s1
-for i = 1:length(SN)
-    hold on
-    plot(SN{i}(:,1),SN{i}(:,2))
-    pause
-    SNnew{i} = SN{i}(1:end-5,:)
-end
-figure
-for i = 1:length(SN)
-    hold on
-    plot(SNnew{i}(:,1),SNnew{i}(:,2))
-    pause
-end
-
-return
+% for i = 130:length(SN)
+%     hold on
+%     plot(SN{i}(:,1),SN{i}(:,2))
+%     pause
+% end
+% 
+% return
 
 for i = 1:pt-1
     newSet{i} = SN{i}
@@ -127,20 +119,75 @@ for i = pt:length(SN)-1
 end
 
 figure
-for i = 1:length(SN)
+for i = 1:length(newSet)
     hold on
-    p = SN{i};
+    p = newSet{i};
     ph(i)=plot(p(:,1)',p(:,2)','b','linewidth',1);
 
 end
 
 RESAVE = 1
 if RESAVE == 1
-    s2 = newSet
-    save(folderStr,'s4','-append')
+    s1 = newSet
+    save(folderStr,'s1','-append')
+end
+
+%% delete points outside the bounding box
+clear all
+xlim=[1800 4650]
+ylim=[760 3000 ]
+[folder, subFolder, imgNum, setIn] = whatFolder()
+folderStr = [folder subFolder setIn]
+load(folderStr)
+close all
+
+SN = s3
+
+figure
+for i = 1:length(SN)
+    hold on
+    plot(SN{i}(:,1),SN{i}(:,2))
+end
+
+for i = 1:length(SN)
+    jnt = SN{i};
+    jnt = jnt(jnt(:,1)>xlim(1),:);
+    SN{i} = jnt;
+end
+
+for i = 1:length(SN)
+    jnt = SN{i};
+    jnt = jnt(jnt(:,1)<xlim(2),:);
+    SN{i} = jnt;
+end
+
+for i = 1:length(SN)
+    jnt = SN{i};
+    jnt = jnt(jnt(:,2)>ylim(1),:);
+    SN{i} = jnt;
+end
+
+for i = 1:length(SN)
+    jnt = SN{i};
+    jnt = jnt(jnt(:,2)<ylim(2),:);
+    SN{i} = jnt;
 end
 
 
+figure
+for i = 1:length(SN)
+    hold on
+    plot(SN{i}(:,1),SN{i}(:,2))
+end
+    
+RESAVE = 0
+if RESAVE == 1
+    s3 = SN
+    save(folderStr,'s3','-append')
+end  
+    
+    
+    
 
 
 

@@ -2,8 +2,8 @@ function draw_line_function_set3(source, callbackdata)
 %DRAW_LINE_FUNCTION Summary of this function goes here
 %   Detailed explanation goes here
 
-[folder, subFolder, imgNum, set] = whatFolder()
-folderStr = [folder subFolder set]
+[folder, subFolder, imgNum, setIn] = whatFolder()
+folderStr = [folder subFolder setIn]
 load(folderStr)
 
 val = source.Value

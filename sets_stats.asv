@@ -1,28 +1,21 @@
 clear all
 close all
 
-[folder, subFolder, imgNum, setIn] = whatFolder()
-folderStr = [folder subFolder setIn]
-
-load(folderStr)
+folder = 'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\'
+load([folder 'sets_2.mat'])
 
 %% scale
+load D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\scales_3d.mat
+%%% these scales lengths were generated from plot_ptCloud, and notes are
+%%% therin
 
-findSF = 0
-    if findSF == 1
-    load D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\scales_3d.mat
-    %%% these scales lengths were generated from plot_ptCloud, and notes are
-    %%% therin
+for i = 1:length(s4)
+    sb = s4{i} %%% here s4 are the scales drawn on the 2d image
+    l_sb(i) = sqrt(sum((sb(2,:)-sb(1,:)).^2,2))
+end
 
-    for i = 1:length(s4)
-        sb = s4{i} %%% here s4 are the scales drawn on the 2d image
-        l_sb(i) = sqrt(sum((sb(2,:)-sb(1,:)).^2,2))
-    end
-
-    scale_factor = scales(:,2)./l_sb'  %% scales are the line length on the 3d images
-    msf = mean(scale_factor)
-    end
-msf = 1/108
+scale_factor = scales(:,2)./l_sb'  %% scales are the line length on the 3d images
+msf = mean(scale_factor)
 
 %%
 
@@ -48,7 +41,7 @@ for j = 1:3
     %%%. There is a cell for each
     %%% scanline, and within that cell contains the coordinates of where
     %%% the scanline of a given angle (theta) intersects a joint set (j)
-    load([folder subFolder 'sl_pts_' num2str(theta) '_' setNum '_sets.mat'])  
+    load([folder 'sl_pts_' num2str(theta) '_' setNum '_sets_2.mat'])  
     t_dist_bwp = []
     for i = 1:length(set_int)
         
@@ -138,9 +131,9 @@ legend([l1 l2], {'negative exponential', 'lognormal'},'fontsize',12,'location','
 %% ok, this might get a little more complex, but I want to put the points 
 %%% from all sets on a given scanline
     
-s1 = load([folder subFolder 'sl_pts_' num2str(theta) '_' setNumStr{1} '_sets.mat'])  
-s2 = load([folder subFolder 'sl_pts_' num2str(theta) '_' setNumStr{2} '_sets.mat']) 
-s3 = load([folder subFolder 'sl_pts_' num2str(theta) '_' setNumStr{3} '_sets.mat'])
+s1 = load([folder 'sl_pts_' num2str(theta) '_' setNumStr{1} '_sets_2.mat'])  
+s2 = load([folder 'sl_pts_' num2str(theta) '_' setNumStr{2} '_sets_2.mat']) 
+s3 = load([folder 'sl_pts_' num2str(theta) '_' setNumStr{3} '_sets_2.mat'])
 
 t_dist_bwp = []
 for i = 1:length(s1.set_int)
@@ -220,8 +213,8 @@ f1 = figure(1)
 fq = m_fqt
 tot_fq = sum(np_t1')/(sum(line_length)*msf)
 
-% savePDFfunction(f1,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures_2\meanFreq_vs_length')
-% savePDFfunction(f2,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures_2\FreqDist')
+savePDFfunction(f1,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures_2\meanFreq_vs_length')
+savePDFfunction(f2,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures_2\FreqDist')
 
 return
 %% test of the binning size
@@ -233,7 +226,12 @@ return
 % h10 = histogram(t_dist_bwp1{4},10,'normalization','probability')
 
 %% this section is to get the distriubtion of lengths of all the sets, and the first two section of this script should first be run
+clear all
 
+folder = 'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\'
+load([folder 'sets_2.mat'])
+
+msf = 0.009
 
 close all
 fL = figure
@@ -316,7 +314,7 @@ set(gca,'fontsize',fs)
 hold on
 plot([mean_l mean_l],get(gca,'ylim'),'k')
 
-% savePDFfunction(fL,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures_2\lengthDist')
+savePDFfunction(fL,'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\figures_2\lengthDist')
 
 
 
