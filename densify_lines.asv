@@ -2,51 +2,54 @@
 %%% were created using imfreehand
 
 % function [output] = densify_lines(jset)
-clear all 
+% clear all 
 close all
-folder = 'D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\'
-load([folder 'sets_2.mat'])
+[folder, subFolder, imgNum, setIn] = whatFolder()
+folderStr = [folder subFolder setIn]
+load(folderStr)
+figure
+for kk = 1:length(s1)
+jset = s1{3};
 
-for kk = 1:length(s2)
-jset = s2{kk}
-
-[jset] = findUnique(jset)
+[jset] = findUnique(jset);
 if length(jset(:,1))<2
-    output = jset
-    keyboard
+    output = jset;
     return
 end
-[isu_x] = unique(jset(:,1)) 
+[isu_x] = unique(jset(:,2)) ;
 
-%%% if there are y coordinates that are the same, then I have to swap the x
-%%% and y coordinates so that I can atually do some kind of interplotation
-%%% with non unique y, otherwise do the same for the non unique x. 
 if isempty(isu_x) == 0
 
-    xx = linspace(min(jset(:,2)),max(jset(:,2)),length(jset(:,2))*25)
+    xx = linspace(min(jset(:,2)),max(jset(:,2)),length(jset(:,2))*25);
    
     for i = 1:length(jset(:,1))
-        njset = jset(i,:)+(0.1*rand-(0.1/2))
-        jset(i,:) = njset
+        njset = jset(i,:)+(0.1*rand-(0.1/2));
+        jset(i,:) = njset;
     end
 
-    yy = pchip(jset(:,2),jset(:,1),xx)
+    yy = pchip(jset(:,2),jset(:,1),xx);
 
-    output = [yy',xx']
+    output = [yy',xx'];
     keyboard
+    
 else
     
-    xx = linspace(min(jset(:,1)),max(jset(:,1)),length(jset(:,1))*25)
+    xx = linspace(min(jset(:,1)),max(jset(:,1)),length(jset(:,1))*25);
 
     for i = 1:length(jset(:,1))
-        njset = jset(i,:)+(0.25*rand-0.125)
-        jset(i,:) = njset
+        njset = jset(i,:)+(0.25*rand-0.125);
+        jset(i,:) = njset;
     end
-    yy = pchip(jset(:,1),jset(:,2),xx)
+    yy = pchip(jset(:,1),jset(:,2),xx);
 
-    output = [xx',yy']
+    output = [xx',yy'];
 
 end
+
+close all
+figure
+plot(jset(:,1),jset(:,2),'r')
+figure
+plot(output(:,1),output(:,2))
 keyboard
-
-end
+% end

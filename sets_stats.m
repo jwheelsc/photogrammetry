@@ -8,7 +8,7 @@ load(folderStr)
 
 %% scale
 
-findSF = 0
+findSF = 1
     if findSF == 1
     load D:\Field_data\2013\Summer\Images\JWC\GL1\Photogrammetry\July17\GL1PG1ST1\IMG_9030_analysis\scales_3d.mat
     %%% these scales lengths were generated from plot_ptCloud, and notes are
@@ -22,7 +22,7 @@ findSF = 0
     scale_factor = scales(:,2)./l_sb'  %% scales are the line length on the 3d images
     msf = mean(scale_factor)
     end
-msf = 1/108
+% msf = 1/108
 
 %%
 
