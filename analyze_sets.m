@@ -217,7 +217,7 @@ for t = 1:length(thetaA)
     end
 
     axis equal
-    save([folder subFolder 'sl_pts_' num2str(theta) '_' setNum '_sets.mat'], 'set_int', 'line_length')
+%     save([folder subFolder 'sl_pts_' num2str(theta) '_' setNum '_sets.mat'], 'set_int', 'line_length')
 
 end
 
